@@ -1,3 +1,4 @@
+
 #include "http_response.hpp"
 #include <sstream>
 
@@ -6,11 +7,17 @@ HttpResponse::HttpResponse(int status_code, const std::string& status_text)
     headers_["Server"] = "cpp-http-server/1.0";
 }
 
-void HttpResponse::setHeader(const std::string& key, const std::string& value) {
+int HttpResponse::statusCode() const {
+    return status_code_;
+}
+
+void HttpResponse::setHeader(const std::string& key,
+                             const std::string& value) {
     headers_[key] = value;
 }
 
-void HttpResponse::setBody(const std::string& body, const std::string& content_type) {
+void HttpResponse::setBody(const std::string& body,
+                           const std::string& content_type) {
     body_ = body;
     headers_["Content-Type"] = content_type;
     headers_["Content-Length"] = std::to_string(body.size());
@@ -22,10 +29,14 @@ void HttpResponse::setKeepAlive(bool keep_alive) {
 
 std::string HttpResponse::toString() const {
     std::ostringstream out;
-    out << "HTTP/1.1 " << status_code_ << " " << status_text_ << "\r\n";
+
+    out << "HTTP/1.1 " << status_code_ << " "
+        << status_text_ << "\r\n";
+
     for (const auto& [key, value] : headers_) {
         out << key << ": " << value << "\r\n";
     }
+
     out << "\r\n" << body_;
     return out.str();
 }

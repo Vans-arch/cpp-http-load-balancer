@@ -13,6 +13,9 @@ struct Backend {
     uint16_t port;
     std::atomic<int> active_connections{0};
     std::atomic<bool> healthy{true};
+
+    std::atomic<uint64_t> total_requests{0};
+    std::atomic<uint64_t> failed_requests{0};
 };
 
 enum class LbStrategy { RoundRobin, LeastConnections };

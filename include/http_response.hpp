@@ -6,7 +6,7 @@
 class HttpResponse {
 public:
     explicit HttpResponse(int status_code = 200, const std::string& status_text = "OK");
-
+    int statusCode() const;
     void setHeader(const std::string& key, const std::string& value);
     void setBody(const std::string& body, const std::string& content_type = "text/plain");
     void setKeepAlive(bool keep_alive);
